@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Smart Study Notes Generator</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="badge">GENERATIVE AI MINI PROJECT</div>
+            <h1>Smart Study Notes Generator</h1>
+            <p>Turn long study paragraphs into short summaries and key points.</p>
+        </header>
+
+        <main>
+            <section class="card">
+                <h2>Enter your paragraph</h2>
+                <form method="POST">
+                    <textarea name="text" placeholder="Paste your study paragraph here..." required>{{ request.form.get('text', '') }}</textarea>
+                    <button type="submit">✨ Generate Study Notes</button>
+                </form>
+
+                {% if error %}
+                    <div class="error">{{ error }}</div>
+                {% endif %}
+            </section>
+
+            {% if result %}
+            <section class="results">
+                <div class="card">
+                    <h2>AI Summary</h2>
+                    <p class="summary">{{ result.summary }}</p>
+                </div>
+
+                <div class="card">
+                    <h2>Key Points</h2>
+                    <ul>
+                        {% for point in result.key_points %}
+                            <li>{{ point }}</li>
+                        {% endfor %}
+                    </ul>
+                </div>
+
+                <div class="stats">
+                    <div class="stat">
+                        <span>{{ result.original_words }}</span>
+                        <small>Original Words</small>
+                    </div>
+                    <div class="stat">
+                        <span>{{ result.summary_words }}</span>
+                        <small>Summary Words</small>
+                    </div>
+                    <div class="stat">
+                        <span>{{ result.reduction }}%</span>
+                        <small>Text Reduced</small>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <h2>Original Text</h2>
+                    <p>{{ result.original }}</p>
+                </div>
+            </section>
+            {% endif %}
+        </main>
+
+        <footer>
+            Smart Study Notes Generator • Python + Flask + Hugging Face
+        </footer>
+    </div>
+</body>
+</html>
